@@ -1,0 +1,40 @@
+﻿@page "/counter"
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+@if (currentCount > 3)
+{
+    <p>You win!</p>
+}
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="() => currentCount++">Click me</button>
+
+<br />
+<input @onchange="InputChanged" />
+<p>@message</p>
+
+
+<br />
+<h4>Data binding</h4>
+<input @bind="text" />
+<button @onclick="() => text = string.Empty">Clear</button>
+<br />
+<b>Entered: </b><p>@text</p>
+@code {
+    private int currentCount = 0;
+    string text = "";
+    string message = "";
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    void InputChanged(ChangeEventArgs e)
+    {
+        message = (string)e.Value;
+    }
+}
