@@ -1,0 +1,37 @@
+﻿@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+@using BlazorApp.Models
+
+@page "/pizza"
+
+<h1>Welcome to Blazing Pizza</h1>
+
+<p>@welcomeMessage</p>
+<div class="main">
+    <h1>Blazing Pizzas</h1>
+    <ul class="pizza-cards">
+        @if (specials != null)
+        {
+            @foreach (var special in specials)
+            {
+                <li style="background-image: url('@special.ImageUrl')">
+                    <div class="pizza-info">
+                        <span class="title">@special.Name</span>
+                        @special.Description
+                        <span class="price">@special.GetFormattedBasePrice()</span>
+                    </div>
+                </li>
+            }
+        }
+    </ul>
+</div>
+@code {
+    private string welcomeMessage = "However you like your pizzas, we can deliver them fast!";
+
+    List<PizzaSpecial> specials = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        specials = await httpClient.GetFromJsonAsync<List<PizzaSpecial>>(navigationManager.BaseUri + "specials");
+    }
+}
